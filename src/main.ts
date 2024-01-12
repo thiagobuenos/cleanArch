@@ -16,7 +16,7 @@ export function calc(movArray) {
             // not sunday
             if (mov.ds.getDay() !== 0) {
 
-              result += mov.dist * 3.80;
+              result += mov.dist * 3.90;
               // sunday
             } else {
               result += mov.dist * 5;
@@ -61,7 +61,7 @@ console.log(calc([
   { dist: 10, ds: new Date("2021-03-02T10:00:00") }
 ]));
 console.log(calc([
-  { dist: 10, ds: new Date("2021-03-01T23:00:00") }
+  { dist: 10, ds: new Date("2021-03-02T23:00:00") }
 ]));
 console.log(calc([
   { dist: 10, ds: new Date("2021-03-07T10:00:00") }
