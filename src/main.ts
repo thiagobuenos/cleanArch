@@ -1,79 +1,54 @@
 // @ts-nocheck
+const NORMAL_FARE = 2.10;
+const SUNDAY_FARE = 2.90;
+const OVERNIGHT_FARE = 3.90;
+const OVERNIGHT_SUNDAY_FARE = 5;
+const FIRST_DAY_FARE = 1.5;
+const MIN_FARE = 10;
+const FIRST_DAY = 1;
+const OVERNIGHT_START = 22;
+const OVERNIGHT_END = 6;
+
+function isOvernight(date) {
+  return date.getHours() >= OVERNIGHT_START || date.getHours() <= OVERNIGHT_END;
+}
+
+function isSunday(date) {
+  return date.getDay() === 0;
+}
+
+function isValidDate(date) {
+  return date != null && date != undefined && date instanceof Date && date.toString() !== "Invalid Date"
+}
+
+function isValidDistance(distance) {
+  return distance != null && distance != undefined && typeof distance === "number" && distance > 0
+}
+
 export function calculeteRide(segments) {
   let fare = 0;
   for (const segment of segments) {
-    if (segment.distance != null && segment.distance != undefined && typeof segment.distance === "number" && segment.distance > 0) {
-      if (segment.date != null && segment.date != undefined && segment.date instanceof Date && segment.date.toString() !== "Invalid Date") {
-
-        if (segment.date.getDate() === 1) {
-          fare += segment.distance * 1.5;
-        } else {
-          // overnight
-
-          if (segment.date.getHours() >= 22 || segment.date.getHours() <= 6) {
-
-            // not sunday
-            if (segment.date.getDay() !== 0) {
-
-              fare += segment.distance * 3.90;
-              // sunday
-            } else {
-              fare += segment.distance * 5;
-
-            }
-          } else {
-            // sunday
-            if (segment.date.getDay() === 0) {
-
-              fare += segment.distance * 2.9;
-
-            } else {
-              fare += segment.distance * 2.10;
-            }
-          }
-
-
-        }
-
-      } else {
-        // console.log(d);
-        return -2;
-      }
-    } else {
-      // console.log(distance);
-
-      return -1;
+    if (!isValidDistance(segment.distance)) throw new Error("Invalid distance");
+    if (!isValidDate(segment.date)) throw new Error("Invalid date");
+    if (segment.date.getDate() === FIRST_DAY) {
+      fare += segment.distance * FIRST_DAY_FARE;
+      continue;
     }
-
+    if (isOvernight(segment.date) && (!isSunday(segment.date))) {
+      fare += segment.distance * OVERNIGHT_FARE;
+      continue;
+    }
+    if (isOvernight(segment.date) && (isSunday(segment.date))) {
+      fare += segment.distance * OVERNIGHT_SUNDAY_FARE;
+      continue;
+    }
+    if (!isOvernight(segment.date) && isSunday(segment.date)) {
+      fare += segment.distance * SUNDAY_FARE;
+      continue;
+    }
+    if (!isOvernight(segment.date) && (!isSunday(segment.date))) {
+      fare += segment.distance * NORMAL_FARE;
+    }
   }
-  if (fare < 10) {
-    return 10;
-  } else {
-    return fare;
-  }
+  return (fare < MIN_FARE) ? MIN_FARE : fare;
 }
-
-console.log(calculeteRide([
-  { distance: 10, ds: new Date("2021-03-01T10:00:00") }
-]));
-console.log(calculeteRide([
-  { distance: 10, ds: new Date("2021-03-02T10:00:00") }
-]));
-console.log(calculeteRide([
-  { distance: 10, ds: new Date("2021-03-02T23:00:00") }
-]));
-console.log(calculeteRide([
-  { distance: 10, ds: new Date("2021-03-07T10:00:00") }
-]));
-console.log(calculeteRide([
-  { distance: 10, ds: new Date("2021-03-07T23:00:00") }
-]));
-console.log(calculeteRide([
-  { distance: -10, ds: new Date("2021-03-01T10:00:00") }
-]));
-console.log(calculeteRide([
-  { distance: 10, ds: new Date("abcdef") }
-]));
-console.log(calculeteRide([
-  { distance: 3, ds: new Date("2021-03-01T10:00:00") }
-]));
