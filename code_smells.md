@@ -17,3 +17,9 @@ Introduzir ternário
 
 ## 6 - Tratamento inadequado de erros
 Introduzir tratamento de erros
+
+## 7 - Classe grande
+Extrair classe
+Mover método
+
+## 8 - Longa lista de parametros

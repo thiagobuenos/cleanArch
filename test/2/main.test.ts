@@ -1,4 +1,4 @@
-import { calculeteRide } from "../src/main";
+import { calculeteRide } from "../../src/2/main";
 
 test("Deve calcular uma corrida no primeiro dia do mês", function () {
   expect(calculeteRide([{ distance: 10, date: new Date("2021-03-01T10:00:00") }])).toBe(15);

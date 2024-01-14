@@ -1,4 +1,3 @@
-// @ts-nocheck
 const NORMAL_FARE = 2.10;
 const SUNDAY_FARE = 2.90;
 const OVERNIGHT_FARE = 3.90;
@@ -9,23 +8,23 @@ const FIRST_DAY = 1;
 const OVERNIGHT_START = 22;
 const OVERNIGHT_END = 6;
 
-function isOvernight(date) {
+function isOvernight(date: Date) {
   return date.getHours() >= OVERNIGHT_START || date.getHours() <= OVERNIGHT_END;
 }
 
-function isSunday(date) {
+function isSunday(date: Date) {
   return date.getDay() === 0;
 }
 
-function isValidDate(date) {
+function isValidDate(date: Date) {
   return date != null && date != undefined && date instanceof Date && date.toString() !== "Invalid Date"
 }
 
-function isValidDistance(distance) {
+function isValidDistance(distance: number) {
   return distance != null && distance != undefined && typeof distance === "number" && distance > 0
 }
 
-export function calculeteRide(segments) {
+export function calculeteRide(segments: any) {
   let fare = 0;
   for (const segment of segments) {
     if (!isValidDistance(segment.distance)) throw new Error("Invalid distance");
