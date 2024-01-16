@@ -1,3 +1,4 @@
+import NormalFareCalculator from "./NormalFareCalculator";
 import Segment from "./Segment";
 
 
@@ -39,7 +40,9 @@ export default class Ride {
         continue;
       }
       if (!segment.isOvernight() && (!segment.isSunday())) {
-        fare += segment.distance * this.NORMAL_FARE;
+        const fareCalculator = new NormalFareCalculator();
+        fare += fareCalculator.calculateFare(segment);
+        continue;
       }
     }
     return (fare < this.MIN_FARE) ? this.MIN_FARE : fare;
